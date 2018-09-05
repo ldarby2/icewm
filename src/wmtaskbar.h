@@ -91,6 +91,7 @@ public:
     void relayoutTasks();
 
     WorkspacesPane *workspacesPane() const { return fWorkspaces; }
+    TaskPane *taskPane() const { return fTasks; }
 
     void popupStartMenu();
     void popupWindowListMenu();
@@ -120,7 +121,6 @@ private:
     void popOut();
 
     AddressBar *addressBar() const { return fAddressBar; }
-    TaskPane *taskPane() const { return fTasks; }
     TrayPane *windowTrayPane() const { return fWindowTray; }
 
     virtual ref<YImage> getGradient() const { return fGradient; }

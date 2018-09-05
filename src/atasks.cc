@@ -426,6 +426,25 @@ void TaskPane::removeApp(YFrameWindow *frame) {
     }
 }
 
+void TaskPane::moveAppTozIndex(YFrameWindow *f, int zIndex) {
+    int frame_idx=0;
+
+    if (zIndex > fApps.getCount()-1) {
+        //probably hidden windows cause this
+        return;
+    }
+    //printf ("moveAppTozIndex: %s, %d\n",cstring(f->getTitle()).c_str(),zIndex);
+
+    IterType task = fApps.iterator();
+    while (++task && task->getFrame() != f) {
+        frame_idx++;
+    }
+    if (task && task->getShown() && zIndex != frame_idx) {
+        fApps.swap(frame_idx,zIndex);
+    }
+
+}
+
 void TaskPane::relayoutNow() {
     if (!fNeedRelayout)
         return ;

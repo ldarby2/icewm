@@ -167,6 +167,7 @@ public:
     YFrameIter focusedIterator() { return fFocusedOrder.iterator(); }
     YFrameIter focusedReverseIterator() { return fFocusedOrder.reverseIterator(); }
     int focusedCount() const { return fFocusedOrder.count(); }
+    void updateTaskPane();
     void insertFocusFrame(YFrameWindow* frame, bool focused);
     void removeFocusFrame(YFrameWindow* frame);
     void lowerFocusFrame(YFrameWindow* frame);

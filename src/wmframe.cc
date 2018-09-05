@@ -1228,6 +1228,7 @@ void YFrameWindow::wmMinimize() {
     }
     manager->unlockFocus();
     manager->focusLastWindow();
+    manager->updateTaskPane();
 }
 
 void YFrameWindow::minimizeTransients() {

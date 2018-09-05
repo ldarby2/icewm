@@ -53,10 +53,6 @@ class WindowItemsCtrlr : public ISwitchItems
             fLastWindow = 0;
     }
 
-    void freeList() {
-        zList.clear();
-    }
-
     void GetZListWorkspace(bool workspaceOnly, int workspace)
     {
         for (int pass = 0; pass <= 5; pass++) {
@@ -116,9 +112,18 @@ class WindowItemsCtrlr : public ISwitchItems
 
 public:
 
+    virtual void freeList() {
+        zList.clear();
+    }
+
     virtual int getCount()
     {
         return zList.getCount();
+    }
+
+    virtual YFrameWindow* getFrame(int itemIdx)
+    {
+            return zList[itemIdx];
     }
 
     virtual ref<YIcon> getIcon(int itemIdx) OVERRIDE
@@ -643,6 +648,22 @@ void SwitchWindow::begin(bool zdown, int mods) {
         if (!modDown(mask))
             accept();
     }
+}
+
+void SwitchWindow::updateList() {
+    zItems->updateList();
+}
+
+void SwitchWindow::freeList() {
+    zItems->freeList();
+}
+
+int SwitchWindow::getCount() {
+    return zItems->getCount();
+}
+
+YFrameWindow* SwitchWindow::getFrame(int itemIdx){
+    return zItems->getFrame(itemIdx);
 }
 
 void SwitchWindow::activatePopup(int /*flags*/) {

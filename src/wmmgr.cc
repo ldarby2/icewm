@@ -3490,6 +3490,29 @@ void YWindowManager::removeCreatedFrame(YFrameWindow *f) {
     fCreatedUpdated = true;
 }
 
+void YWindowManager::updateTaskPane() {
+    if (fWmState != wmRUNNING) {
+        return;
+    }
+
+    wmapp->getSwitchWindow()->updateList();
+    int zCount = wmapp->getSwitchWindow()->getCount();
+
+    //Could optimise this with a stop value, i.e. if a minimised window is
+    //closed, everything above it needs to shuffle, but if e.g. 3rd top
+    //window is closed, only top 2 need to shuffle.
+    YFrameWindow *f;
+    for (int i = 0 ; i < zCount ; i++) {
+        f = wmapp->getSwitchWindow()->getFrame(i);
+        taskBar->taskPane()->moveAppTozIndex(f, zCount-i-1);
+        //top at left, bottom at right:
+        //taskBar->taskPane()->moveAppTozIndex(f, i);
+    }
+    wmapp->getSwitchWindow()->freeList();
+    taskBar->taskPane()->relayout();
+    taskBar->taskPane()->relayoutNow();
+}
+
 void YWindowManager::insertFocusFrame(YFrameWindow* frame, bool focused) {
     if (focused || fFocusedOrder.count() < 1) {
         fFocusedOrder.append(frame);
@@ -3500,17 +3523,31 @@ void YWindowManager::insertFocusFrame(YFrameWindow* frame, bool focused) {
 }
 
 void YWindowManager::removeFocusFrame(YFrameWindow* frame) {
+    bool update=true;
+    if (fFocusedOrder.back() == frame) {
+        update = false;
+    }
     fFocusedOrder.remove(frame);
+    if (update) {
+        updateTaskPane();
+    }
 }
 
 void YWindowManager::lowerFocusFrame(YFrameWindow* frame) {
     fFocusedOrder.remove(frame);
     fFocusedOrder.prepend(frame);
+    //here updateTaskPane() needs to be called after focus has actually changed, in YFrameWindow::wmMinimize
 }
 
 void YWindowManager::raiseFocusFrame(YFrameWindow* frame) {
+    //optimisation:
+    // if (fFocusedOrder.back() == frame) {
+    //     printf ("raiseFocusFrame called pointlessly\n");
+    //     return;
+    // }
     fFocusedOrder.remove(frame);
     fFocusedOrder.append(frame);
+    updateTaskPane();
 }
 
 // vim: set sw=4 ts=4 et:

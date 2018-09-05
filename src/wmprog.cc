@@ -181,6 +181,13 @@ public:
     virtual int getCount() OVERRIDE {
         return menu->itemCount();
     }
+    //unused, gcc errors without this
+    virtual YFrameWindow* getFrame(int itemIdx) OVERRIDE {
+            return NULL;
+    }
+    //unused, gcc errors without this
+    virtual void freeList() OVERRIDE {
+    }
     virtual bool isKey(KeySym k, unsigned int mod) OVERRIDE {
         return k == this->key && mod == this->mod;
     }

@@ -62,6 +62,8 @@ public:
     TaskBarApp *successor(TaskBarApp *tapp);
     void removeApp(YFrameWindow *frame);
 
+    void moveAppTozIndex(YFrameWindow *frame, int zIndex);
+
     void relayout() { fNeedRelayout = true; }
     void relayoutNow();
 

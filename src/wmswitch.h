@@ -23,6 +23,8 @@ class ISwitchItems
 public:
     virtual void updateList() =0;
     virtual int getCount() =0;
+    virtual void freeList() =0;
+    virtual YFrameWindow* getFrame(int) =0;
     virtual ~ISwitchItems() {}
 
     // move the focused target up or down and return the new focused element
@@ -59,6 +61,11 @@ public:
     virtual void paint(Graphics &g, const YRect &r);
 
     void begin(bool zdown, int mods);
+
+    void updateList();
+    int getCount();
+    void freeList();
+    YFrameWindow* getFrame(int itemIdx);
 
     virtual void activatePopup(int flags);
     virtual void deactivatePopup();
