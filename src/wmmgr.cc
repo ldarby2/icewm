@@ -3491,24 +3491,25 @@ void YWindowManager::removeCreatedFrame(YFrameWindow *f) {
 }
 
 void YWindowManager::updateTaskPane() {
-    if (fWmState != wmRUNNING) {
+    if (fWmState != wmRUNNING)
         return;
-    }
+    SwitchWindow* sw = wmapp->getSwitchWindow();
+    if (!sw)
+        return;
 
-    wmapp->getSwitchWindow()->updateList();
-    int zCount = wmapp->getSwitchWindow()->getCount();
-
+    sw->updateList();
+    int zCount = sw->getCount();
     //Could optimise this with a stop value, i.e. if a minimised window is
     //closed, everything above it needs to shuffle, but if e.g. 3rd top
     //window is closed, only top 2 need to shuffle.
     YFrameWindow *f;
     for (int i = 0 ; i < zCount ; i++) {
-        f = wmapp->getSwitchWindow()->getFrame(i);
+        f = sw->getFrame(i);
         taskBar->taskPane()->moveAppTozIndex(f, zCount-i-1);
         //top at left, bottom at right:
         //taskBar->taskPane()->moveAppTozIndex(f, i);
     }
-    wmapp->getSwitchWindow()->freeList();
+    sw->freeList();
     taskBar->taskPane()->relayout();
     taskBar->taskPane()->relayoutNow();
 }
